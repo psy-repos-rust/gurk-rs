@@ -17,12 +17,21 @@ impl App {
     }
 
     pub fn select_previous_channel(&mut self) {
+        self.reset_unread_messages();
+        let old = self.channels.selected_item().copied();
         self.channels.previous();
+        let new = self.channels.selected_item().copied();
+        self.swap_channel_draft(old, new);
         self.on_channel_changed();
     }
 
     pub fn select_next_channel(&mut self) {
+        self.reset_unread_messages();
+        let old = self.channels.selected_item().copied();
         self.channels.next();
+        let new = self.channels.selected_item().copied();
+        self.swap_channel_draft(old, new);
+        self.channels.previous();
         self.on_channel_changed();
     }
 

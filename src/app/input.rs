@@ -138,6 +138,7 @@ impl App {
                         && let Some(channel_id) = self.select_channel.selected_channel_id().copied()
                     {
                         self.select_channel.is_shown = false;
+                        let old = self.channels.selected_item().copied();
                         let (idx, _) = self
                             .channels
                             .items
@@ -146,6 +147,8 @@ impl App {
                             .find(|(_, id)| **id == channel_id)
                             .context("channel disappeared during channel select popup")?;
                         self.channels.state.select(Some(idx));
+                        let new = self.channels.selected_item().copied();
+                        self.swap_channel_draft(old, new);
                     }
                 }
                 KeyCode::Esc if !self.reset_editing() => {
